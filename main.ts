@@ -48,37 +48,7 @@ class PIDAngleController extends PIDController {
         return distance;
     }
 }
-let control_states = 0
-let rollingAvg = 0
-let read_index = 0
-let total = 0
-let yawAngle = 0
-let yawAngularSpeed = 0
-const MAX_SPEED = 25
-const kp = 0.0005
-const ki = 0
-const kd = 0.019
-let pid_speed = new PIDController(kp, ki, kd)
-let pid_attitude = new PIDAngleController(1.25, 0, 200)
-let motorSpeed = 0;
-let timecur: number;
-let timeprev;
-let timestart;
-let num_read = 5
-let giro = 0
-let readings = [
-    0,
-    0,
-    0,
-    0,
-    0
-]
-const giro_err = 44.0880282
-let counts = 0
-let thorttle = 76
-let targetAtt: number
-timecur = control.millis()
-timestart = timecur
+
 
 /**
  * Control PID
@@ -87,7 +57,37 @@ timestart = timecur
 //% groups='Positional'
 namespace PID {
     //% fixedInstances
-
+    let control_states = 0
+    let rollingAvg = 0
+    let read_index = 0
+    let total = 0
+    let yawAngle = 0
+    let yawAngularSpeed = 0
+    const MAX_SPEED = 25
+    const kp = 0.0005
+    const ki = 0
+    const kd = 0.019
+    let pid_speed = new PIDController(kp, ki, kd)
+    let pid_attitude = new PIDAngleController(1.25, 0, 200)
+    let motorSpeed = 0;
+    let timecur: number;
+    let timeprev;
+    let timestart;
+    let num_read = 5
+    let giro = 0
+    let readings = [
+        0,
+        0,
+        0,
+        0,
+        0
+    ]
+    const giro_err = 44.0880282
+    let counts = 0
+    let thorttle = 76
+    let targetAtt: number
+    timecur = control.millis()
+    timestart = timecur
 
 /**
     * Inicializa en PID
