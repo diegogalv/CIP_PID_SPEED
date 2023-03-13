@@ -1,4 +1,3 @@
-radio.setTransmitPower(7)
 class PIDController {
     kp: number
     ki: number
@@ -49,15 +48,12 @@ class PIDAngleController extends PIDController {
         return distance;
     }
 }
-SENMPU6050.initMPU6050()
-let control_mode = 2
 let control_states = 0
 let rollingAvg = 0
 let read_index = 0
 let total = 0
 let yawAngle = 0
 let yawAngularSpeed = 0
-let targetAttitude = 0
 const MAX_SPEED = 25
 const kp = 0.0005
 const ki = 0
@@ -80,10 +76,46 @@ let readings = [
 const giro_err = 44.0880282
 let counts = 0
 let thorttle = 76
+let targetAtt: number
 timecur = control.millis()
 timestart = timecur
-pins.analogSetPeriod(AnalogPin.P0, 21)
-basic.forever(function () {
+
+/**
+ * Control PID
+ */
+//% color="#03AA74" weight=88 icon="\uf021" blockGap=8
+//% groups='Positional'
+namespace PID {
+    //% fixedInstances
+
+
+/**
+    * Inicializa en PID
+    */
+//% blockId="PID_control_inicializado"
+//% block="control_init"
+export function Init(): void{
+    radio.setTransmitPower(7)
+    SENMPU6050.initMPU6050()
+    pins.analogSetPeriod(AnalogPin.P0, 21)
+}
+
+   
+
+
+    /**
+             * Set the possible rotation range angles for the servo between 0 and 180
+             * @param minAngle the minimum angle from 0 to 90
+             * @param maxAngle the maximum angle from 90 to 180
+             */
+        //% help=PID/PID_Control
+        //% blockId=pidcontrol block="PID modo %control_mode en el angulo %angle"
+        //% control_mode.min=0 control_mode.max=2
+        //% angle.min=0 maxAngle.max=360 angle.defl=180
+        //% group="Positional"
+        //% blockGap=8
+    export function Control_PID(control_mode :number, angle:number): void {
+    
     if (control.millis() - timecur > 10) {
         timeprev = timecur
         timecur = control.millis()
@@ -119,7 +151,7 @@ basic.forever(function () {
                 //    if (counts == 300) {
                 //        counts = 0;
                 //        if (targetAttitude == 0)
-                targetAttitude = 45;
+                targetAtt = angle;
                 //        else
                 //            targetAttitude = 0;
                 //    }
@@ -133,9 +165,9 @@ basic.forever(function () {
             //FSM action
             if (control_states == 0) {
                 motorSpeed += pid_speed.compute(0, rollingAvg, timecur - timeprev);
-                pid_attitude.compute(targetAttitude, yawAngle, timecur - timeprev);
+                pid_attitude.compute(angle, yawAngle, timecur - timeprev);
             } else {
-                motorSpeed += pid_speed.compute(pid_attitude.compute(targetAttitude, yawAngle, timecur - timeprev), rollingAvg, timecur - timeprev);
+                motorSpeed += pid_speed.compute(pid_attitude.compute(angle, yawAngle, timecur - timeprev), rollingAvg, timecur - timeprev);
             }
         }
         if (motorSpeed > MAX_SPEED) motorSpeed = MAX_SPEED;
@@ -144,4 +176,5 @@ basic.forever(function () {
         giro = thorttle - motorSpeed;
         pins.analogWritePin(AnalogPin.P0, giro);
     }
-})
+}
+}
