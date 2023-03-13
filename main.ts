@@ -68,7 +68,7 @@ namespace PID {
     const ki = 0
     const kd = 0.019
     let pid_speed = new PIDController(kp, ki, kd)
-    let pid_attitude = new PIDAngleController(1.25, 0, 200)
+    let pid_attitude = new PIDAngleController(2.25, 0, 400)
     let motorSpeed = 0;
     let timecur: number;
     let timeprev;
