@@ -104,9 +104,9 @@ export function Init(): void{
 
 
     /**
-             * Set the possible rotation range angles for the servo between 0 and 180
-             * @param minAngle the minimum angle from 0 to 90
-             * @param maxAngle the maximum angle from 90 to 180
+             * set the angle Position
+             * @param control_mode determina como va a trabajar el PID sia control de velociadad(0) o control de posicion(1, 2), 1 para estabilizar en 0 grados y 2 para escoger el grado al cual se va a estabilizar el cubesat
+             * @param angle angulo en el cual se estabiliza en cubesat(solo funciona cuando el modo es 1)
              */
         //% help=PID/PID_Control
         //% blockId=pidcontrol block="PID modo %control_mode en el angulo %angle"
