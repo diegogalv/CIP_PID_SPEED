@@ -111,7 +111,7 @@ export function Init(): void{
         //% help=PID/PID_Control
         //% blockId=pidcontrol block="PID modo %control_mode en el angulo %angle"
         //% control_mode.min=0 control_mode.max=2
-        //% angle.min=0 maxAngle.max=360 angle.defl=180
+        //% angle.min=0 angle.max=360 angle.defl=180
         //% group="Positional"
         //% blockGap=8
     export function Control_PID(control_mode :number, angle:number): void {
